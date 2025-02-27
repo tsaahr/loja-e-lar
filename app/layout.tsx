@@ -1,3 +1,4 @@
+import Header from "./components/header/page";
 export default function RootLayout({
   children,
 }: {
@@ -5,7 +6,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body>{children}</body>
+      <body>
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }
