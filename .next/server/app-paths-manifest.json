@@ -1,5 +1,5 @@
 {
-  "/api/produtos/route": "app/api/produtos/route.js",
   "/_not-found/page": "app/_not-found/page.js",
+  "/api/produtos/route": "app/api/produtos/route.js",
   "/page": "app/page.js"
 }
