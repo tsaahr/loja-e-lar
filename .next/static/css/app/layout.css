@@ -597,17 +597,14 @@ video {
 .w-full {
   width: 100%;
 }
-.max-w-4xl {
-  max-width: 56rem;
+.max-w-5xl {
+  max-width: 64rem;
 }
 .max-w-md {
   max-width: 28rem;
 }
-.max-w-6xl {
-  max-width: 72rem;
-}
-.max-w-5xl {
-  max-width: 64rem;
+.flex-1 {
+  flex: 1 1 0%;
 }
 .-translate-y-1\/2 {
   --tw-translate-y: -50%;

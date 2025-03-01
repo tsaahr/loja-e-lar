@@ -21,10 +21,10 @@
       "static/chunks/main-app.js",
       "static/chunks/app/(site)/catalogo/page.js"
     ],
-    "/auth/login/page": [
+    "/(site)/ofertas/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/auth/login/page.js"
+      "static/chunks/app/(site)/ofertas/page.js"
     ]
   }
 }
