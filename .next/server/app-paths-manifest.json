@@ -1,6 +1,7 @@
 {
   "/page": "app/page.js",
   "/(site)/catalogo/page": "app/(site)/catalogo/page.js",
+  "/(site)/ofertas/page": "app/(site)/ofertas/page.js",
   "/(site)/contato/page": "app/(site)/contato/page.js",
-  "/(site)/ofertas/page": "app/(site)/ofertas/page.js"
+  "/auth/login/page": "app/auth/login/page.js"
 }

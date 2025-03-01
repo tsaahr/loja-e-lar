@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
 import SearchBar from "./search";
@@ -19,7 +21,7 @@ export default function Header() {
 
           {/* Ícones de usuário e carrinho */}
           <div className="flex space-x-6">
-            <Link href="/login" className="text-2xl hover:text-gray-600">
+            <Link href="/auth/login" className="text-2xl hover:text-gray-600">
               <FaUser />
             </Link>
             <Link href="/carrinho" className="text-2xl hover:text-gray-600 relative">

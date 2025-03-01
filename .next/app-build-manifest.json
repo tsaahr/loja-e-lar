@@ -21,15 +21,20 @@
       "static/chunks/main-app.js",
       "static/chunks/app/(site)/catalogo/page.js"
     ],
+    "/(site)/ofertas/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(site)/ofertas/page.js"
+    ],
     "/(site)/contato/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(site)/contato/page.js"
     ],
-    "/(site)/ofertas/page": [
+    "/auth/login/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(site)/ofertas/page.js"
+      "static/chunks/app/auth/login/page.js"
     ]
   }
 }
