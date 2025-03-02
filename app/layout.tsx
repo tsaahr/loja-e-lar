@@ -8,10 +8,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body className="bg-[url('/images/background.png')] bg-cover bg-center flex items-center justify-center min-h-screen m-4">
-        <div className="bg-white w-full max-w-5xl min-h-[500px] md:min-h-[600px] rounded-2xl shadow-lg">   
+      <body className="bg-[url('/images/background.png')] bg-cover bg-center h-full">
+        <div className="shadow-lg ">
           <Header />
-          {children}
+          <div className="bg-white m-6 min-h-[1000px]">{children}</div>
           <Footer />
         </div>
       </body>
