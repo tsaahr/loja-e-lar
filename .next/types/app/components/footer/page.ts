@@ -1,4 +1,4 @@
-// File: /workspaces/loja-e-lar/app/components/footer/page.tsx
+// File: C:\Users\lithy\OneDrive\Documentos\GitHub\loja-e-lar\app\components\footer\page.tsx
 import * as entry from '../../../../../app/components/footer/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
