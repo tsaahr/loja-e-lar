@@ -1,39 +1,72 @@
-"use client"
+"use client";
 
 import Link from "next/link";
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabase";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
 import SearchBar from "./search";
+import { User } from "@supabase/supabase-js";
 
 export default function Header() {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      setUser(session?.user || null);
+    };
+
+    fetchUser();
+
+    // Listener para mudanças na autenticação
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user || null);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
   return (
-    <header className="bg-gray-300 shadow-md p-6">
+    <header className="bg-gray-300 shadow-md p-4 md:p-6">
       <div className="container mx-auto flex flex-col items-center relative">
-        <div className="w-full flex justify-between items-center">
+        <div className="w-full flex flex-wrap justify-between items-center">
           {/* Logo */}
           <Link href="/">
-            <span className="text-2xl font-bold">Loja e Lar</span>
+            <span className="text-xl md:text-2xl font-bold">Loja e Lar</span>
           </Link>
 
           {/* Barra de Pesquisa */}
-          <div className="w-1/3">
+          <div className="w-full md:w-1/3 mt-2 md:mt-0">
             <SearchBar />
           </div>
 
           {/* Ícones de usuário e carrinho */}
-          <div className="flex space-x-6">
-            <Link href="/auth/login" className="text-2xl hover:text-gray-600">
+          <div className="flex space-x-4 md:space-x-6 mt-2 md:mt-0">
+            <Link
+              href={user ? "/conta" : "/auth/login"}
+              className={`text-xl md:text-2xl ${user ? "text-green-500" : "text-black"} hover:text-gray-600`}
+            >
               <FaUser />
             </Link>
-            <Link href="/carrinho" className="text-2xl hover:text-gray-600 relative">
+            <Link href="/carrinho" className="text-xl md:text-2xl hover:text-gray-600 relative">
               <FaShoppingCart />
-              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">3</span>
+              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                3
+              </span>
             </Link>
           </div>
         </div>
 
         {/* NavBar */}
         <nav className="w-full bg-gray-400 mt-4 p-2 rounded-md">
-          <ul className="flex justify-center space-x-20 text-lg font-medium">
+          <ul className="flex flex-wrap justify-center space-x-6 md:space-x-20 text-sm md:text-lg font-medium">
             <li>
               <Link href="/" className="hover:text-gray-600">Início</Link>
             </li>
