@@ -1,37 +1,33 @@
 import { NextResponse } from 'next/server';
-import { createPagesServerClient } from '@supabase/auth-helpers-nextjs';
-import { NextRequest } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
 
 export async function middleware(req: NextRequest) {
-  // Cria o cliente do Supabase com base na requisição
-  const supabase = createPagesServerClient({ req });
+  const res = NextResponse.next();
 
-  // Verifica a sessão do usuário
+  const supabase = createMiddlewareClient({ req, res });
+
   const {
     data: { session },
   } = await supabase.auth.getSession();
 
-  // Se não houver sessão (usuário não autenticado), redireciona para o login
   if (!session) {
-    return NextResponse.redirect(new URL('/login', req.url));
+    return NextResponse.redirect(new URL('/auth/login', req.url));
   }
 
-  // Verificar se o usuário tem o role 'admin' (pode ser feito de várias maneiras)
   const { data: user, error } = await supabase
-    .from('users') // Supondo que você tem uma tabela de 'users' no Supabase
-    .select('role') // Selecionando o campo 'role' para verificar se é admin
+    .from('users')
+    .select('role')
     .eq('id', session.user.id)
     .single();
 
-  // Se houver erro ou o usuário não for admin, redireciona para a página de erro ou outra página
   if (error || user?.role !== 'admin') {
-    return NextResponse.redirect(new URL('/404', req.url)); // Ou uma página personalizada
+    return NextResponse.redirect(new URL('/404', req.url));
   }
 
-  // Se tudo estiver ok, permite o acesso à página
-  return NextResponse.next();
+  return res;
 }
 
 export const config = {
-  matcher: ['/admin/*'], // As páginas que devem ser protegidas pelo middleware (somente admin)
+  matcher: ['/admin/:path*'],
 };
