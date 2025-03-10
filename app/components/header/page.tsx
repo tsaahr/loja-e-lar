@@ -6,6 +6,7 @@ import { supabase } from "@/lib/supabase";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
 import SearchBar from "./search";
 import { User } from "@supabase/supabase-js";
+import Image from "next/image";
 
 export default function Header() {
   const [user, setUser] = useState<User | null>(null);
@@ -21,7 +22,6 @@ export default function Header() {
 
     fetchUser();
 
-    // Listener para mudanças na autenticação
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -35,20 +35,28 @@ export default function Header() {
 
   return (
     <header className="bg-gray-300 shadow-md p-4 md:p-6">
-      <div className="container mx-auto flex flex-col items-center relative">
+      <div className="container mx-auto flex flex-col relative">
+        {/* Topbar: Logo - Busca - Ícones */}
         <div className="w-full flex flex-wrap justify-between items-center">
-          {/* Logo */}
-          <Link href="/">
-            <span className="text-xl md:text-2xl font-bold">Loja e Lar</span>
+          {/* Logo (maior e colada à esquerda) */}
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/images/logo.png"
+              alt="Logo Loja e Lar"
+              width={80}
+              height={80}
+              objectPosition="left"
+              className="rounded-md"
+            />
           </Link>
 
           {/* Barra de Pesquisa */}
-          <div className="w-full md:w-1/3 mt-2 md:mt-0">
+          <div className="w-full md:w-1/3 mt-2 md:mt-0 flex justify-center">
             <SearchBar />
           </div>
 
           {/* Ícones de usuário e carrinho */}
-          <div className="flex space-x-4 md:space-x-6 mt-2 md:mt-0">
+          <div className="flex space-x-4 md:space-x-6 mt-2 md:mt-0 items-center">
             <Link
               href={user ? "/conta" : "/auth/login"}
               className={`text-xl md:text-2xl ${user ? "text-green-500" : "text-black"} hover:text-gray-600`}
@@ -64,7 +72,7 @@ export default function Header() {
           </div>
         </div>
 
-        {/* NavBar */}
+        {/* Navbar */}
         <nav className="w-full bg-gray-400 mt-4 p-2 rounded-md">
           <ul className="flex flex-wrap justify-center space-x-6 md:space-x-20 text-sm md:text-lg font-medium">
             <li>
