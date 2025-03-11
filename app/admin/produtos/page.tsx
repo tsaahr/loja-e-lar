@@ -19,6 +19,7 @@ type Produto = {
 export default function ProdutosPage() {
   const [produtos, setProdutos] = useState<Produto[]>([]);
 
+
   useEffect(() => {
     async function fetchProdutos() {
       const { data, error } = await supabase.from('produtos').select('*');

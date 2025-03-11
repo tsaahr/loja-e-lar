@@ -20,10 +20,14 @@ export default function EditProduto() {
   useEffect(() => {
     async function fetchProduto() {
       const { data, error } = await supabase
-        .from('produtos')
-        .select('*')
-        .eq('id', id)
-        .single();
+      .from('produtos')
+      .select('*')
+      .eq('id', id)
+      .single();
+    
+    if (error) {
+      console.error('Erro ao buscar produto:', error);
+    }
 
       if (error) {
         console.error('Erro ao buscar produto:', error);
