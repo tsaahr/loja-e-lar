@@ -1,54 +1,55 @@
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { createClient } from '@supabase/supabase-js';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+const ADMIN_EMAIL = "admin@exemplo.com";
 
-export default function AdminDashboard() {
-  const router = useRouter();
+export default function AdminPage() {
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
-    async function checkAdmin() {
-      const { data: { user } } = await supabase.auth.getUser();
+    const checkAdmin = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      const user = session?.user;
+
       if (!user) {
-        router.push('/auth/login');
+        router.push("/auth/login");
         return;
       }
 
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', user.id)
-        .single();
-
-      if (error || !data || data.role !== 'admin') {
-        router.push('/');
-        return;
+      if (user.email === ADMIN_EMAIL) {
+        setIsAdmin(true);
+      } else {
+        setIsAdmin(false);
       }
 
       setLoading(false);
-    }
+    };
 
     checkAdmin();
   }, [router]);
 
-  if (loading) {
+  if (loading) return <p className="text-center mt-10">Carregando...</p>;
+
+  if (!isAdmin) {
     return (
-      <div className="p-6 text-center">
-        <p>Verificando permissões...</p>
+      <div className="text-center mt-10 text-red-600 font-semibold">
+        Acesso negado. Esta página é apenas para administradores.
       </div>
     );
   }
 
   return (
-    <div className="p-6 text-center">
-      <p>Redirecionando para a gestão de produtos...</p>
+    <div className="p-8">
+      <h1 className="text-2xl font-bold mb-4">Painel do Administrador</h1>
+      <p className="text-gray-700">Bem-vindo, administrador! Em breve você poderá gerenciar os produtos por aqui.</p>
     </div>
   );
 }

@@ -9,8 +9,15 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
+type Produto = {
+  id: string;
+  nome: string;
+  preco: number;
+  estoque: number;
+};
+
 export default function ProdutosPage() {
-  const [produtos, setProdutos] = useState<any[]>([]);
+  const [produtos, setProdutos] = useState<Produto[]>([]);
 
   useEffect(() => {
     async function fetchProdutos() {

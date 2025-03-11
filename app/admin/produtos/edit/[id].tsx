@@ -25,11 +25,16 @@ export default function EditProduto() {
         .eq('id', id)
         .single();
 
+      if (error) {
+        console.error('Erro ao buscar produto:', error);
+      }
+
       if (data) {
         setNome(data.nome);
         setPreco(data.preco);
         setEstoque(data.estoque);
       }
+
       setLoading(false);
     }
     fetchProduto();
