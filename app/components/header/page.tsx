@@ -7,9 +7,11 @@ import { FaShoppingCart, FaUser } from "react-icons/fa";
 import SearchBar from "./search";
 import { User } from "@supabase/supabase-js";
 import Image from "next/image";
+import { useCart } from "@/app/context/cart-context";
 
 export default function Header() {
   const [user, setUser] = useState<User | null>(null);
+  const { totalItems } = useCart();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -38,7 +40,7 @@ export default function Header() {
       <div className="container mx-auto flex flex-col relative">
         {/* Topbar: Logo - Busca - Ícones */}
         <div className="w-full flex flex-wrap justify-between items-center">
-          {/* Logo (maior e colada à esquerda) */}
+          {/* Logo */}
           <Link href="/" className="flex items-center">
             <Image
               src="/images/logo.png"
@@ -65,9 +67,11 @@ export default function Header() {
             </Link>
             <Link href="/carrinho" className="text-xl md:text-2xl hover:text-gray-600 relative">
               <FaShoppingCart />
-              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                3
-              </span>
+              {totalItems > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                  {totalItems}
+                </span>
+              )}
             </Link>
           </div>
         </div>
