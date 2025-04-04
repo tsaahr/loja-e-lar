@@ -16,7 +16,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             
             {/* 🔥 Conteúdo com leve transparência e efeito vidro */}
             <main className="flex-grow container mx-auto p-8 backdrop-blur-md bg-white/70 shadow-xl rounded-xl transition-all duration-300">
+              <div className="h-screen ">
               {children}
+              </div>
             </main>
 
             <Footer />

@@ -1,3 +1,4 @@
+// utils/check-admin.ts
 "use client";
 
 import { supabase } from "@/lib/supabase";
