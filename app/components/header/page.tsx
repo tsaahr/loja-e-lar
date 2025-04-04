@@ -23,7 +23,7 @@ export default function TopFloatingBar() {
 
     fetchUser();
 
-    const {
+    const { 
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user || null);
@@ -45,14 +45,43 @@ export default function TopFloatingBar() {
     {/* Icons Section */}
     <div className="flex items-center space-x-4">
       {/* Login */}
-      <Link
-        href={user ? "/conta" : "/auth/login"}
-        className={`w-8 h-8 flex items-center justify-center aspect-square text-xl rounded-full ${
-          user ? "text-emerald-200" : "text-white"
-        } hover:text-emerald-300`}
-      >
-        <FaUser />
-      </Link>
+      {user ? (
+  <Link
+    href="#"
+    onClick={async (e) => {
+      e.preventDefault();
+
+      const { data, error } = await supabase
+        .from("users")
+        .select("role")
+        .eq("id", user.id)
+        .single();
+
+      if (error) {
+        console.error("Erro ao buscar role:", error.message);
+        return;
+      }
+
+      const role = data?.role;
+      if (role === "admin") {
+        window.location.href = "/admin";
+      } else {
+        window.location.href = "/conta";
+      }
+    }}
+    className="w-8 h-8 flex items-center justify-center aspect-square text-xl rounded-full text-emerald-200 hover:text-emerald-300"
+  >
+    <FaUser />
+  </Link>
+) : (
+  <Link
+    href="/auth/login"
+    className="w-8 h-8 flex items-center justify-center aspect-square text-xl rounded-full text-white hover:text-emerald-300"
+  >
+    <FaUser />
+  </Link>
+)}
+
 
       {/* Carrinho */}
       <Link
@@ -97,4 +126,4 @@ export default function TopFloatingBar() {
   </div>
 </div>
   );
-} 
+}

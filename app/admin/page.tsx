@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
-
-const ADMIN_EMAIL = "admin@exemplo.com";
+import { checkIfUserIsAdmin } from "@/utils/check-admin";
 
 export default function AdminPage() {
   const [loading, setLoading] = useState(true);
@@ -12,28 +10,19 @@ export default function AdminPage() {
   const router = useRouter();
 
   useEffect(() => {
-    const checkAdmin = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
+    const verifyAdmin = async () => {
+      const result = await checkIfUserIsAdmin();
 
-      const user = session?.user;
-
-      if (!user) {
-        router.push("/auth/login");
-        return;
-      }
-
-      if (user.email === ADMIN_EMAIL) {
+      if (result.isAdmin) {
         setIsAdmin(true);
-      } else {
-        setIsAdmin(false);
+      } else if (result.redirect) {
+        router.push(result.redirect);
       }
 
       setLoading(false);
     };
 
-    checkAdmin();
+    verifyAdmin();
   }, [router]);
 
   if (loading) return <p className="text-center mt-10">Carregando...</p>;
@@ -49,7 +38,7 @@ export default function AdminPage() {
   return (
     <div className="p-8">
       <h1 className="text-2xl font-bold mb-4">Painel do Administrador</h1>
-      <p className="text-gray-700">Bem-vindo, administrador! Em breve você poderá gerenciar os produtos por aqui.</p>
+      <p className="text-gray-700">Bem-vindo, administrador! Aqui você poderá gerenciar seus produtos, pedidos e muito mais.</p>
     </div>
   );
 }

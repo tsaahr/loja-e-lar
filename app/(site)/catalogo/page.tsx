@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import { fetchProdutos } from "@/app/utils/fetchProdutos";
+import { fetchProdutos } from "@/utils/fetchProdutos";
 import Image from "next/image";
 import { motion } from "framer-motion";
 

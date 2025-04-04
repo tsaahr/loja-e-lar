@@ -7,3 +7,15 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+@keyframes gradientBlur {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  .animate-gradientBlur {
+    background-size: 200% 200%;
+    animation: gradientBlur 10s ease infinite;
+  }
+  
