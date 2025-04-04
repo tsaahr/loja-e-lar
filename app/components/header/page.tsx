@@ -3,22 +3,21 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
-import { FaShoppingCart, FaUser } from "react-icons/fa";
-import SearchBar from "./search";
-import { User } from "@supabase/supabase-js";
-import Image from "next/image";
+import { FaShoppingCart, FaUser, FaBars } from "react-icons/fa";
 import { useCart } from "@/app/context/cart-context";
+import { User } from "@supabase/supabase-js";
+import SearchBar from "./search";
 
-export default function Header() {
+export default function TopFloatingBar() {
   const [user, setUser] = useState<User | null>(null);
   const { totalItems } = useCart();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
       const {
         data: { session },
       } = await supabase.auth.getSession();
-
       setUser(session?.user || null);
     };
 
@@ -36,64 +35,66 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="bg-gray-300 shadow-md p-4 md:p-6">
-      <div className="container mx-auto flex flex-col relative">
-        {/* Topbar: Logo - Busca - Ícones */}
-        <div className="w-full flex flex-wrap justify-between items-center">
-          {/* Logo */}
-          <Link href="/" className="flex items-center">
-            <Image
-              src="/images/logo.png"
-              alt="Logo Loja e Lar"
-              width={80}
-              height={80}
-              objectPosition="left"
-              className="rounded-md"
-            />
-          </Link>
+<div className="fixed top-0 left-0 w-full bg-emerald-900 shadow-md z-50">
+  <div className="container mx-auto px-4 py-2 flex justify-between items-center h-16">
+    {/* Search */}
+    <div className="flex-1 max-w-xs">
+      <SearchBar />
+    </div>
 
-          {/* Barra de Pesquisa */}
-          <div className="w-full md:w-1/3 mt-2 md:mt-0 flex justify-center">
-            <SearchBar />
-          </div>
+    {/* Icons Section */}
+    <div className="flex items-center space-x-4">
+      {/* Login */}
+      <Link
+        href={user ? "/conta" : "/auth/login"}
+        className={`w-8 h-8 flex items-center justify-center aspect-square text-xl rounded-full ${
+          user ? "text-emerald-200" : "text-white"
+        } hover:text-emerald-300`}
+      >
+        <FaUser />
+      </Link>
 
-          {/* Ícones de usuário e carrinho */}
-          <div className="flex space-x-4 md:space-x-6 mt-2 md:mt-0 items-center">
-            <Link
-              href={user ? "/conta" : "/auth/login"}
-              className={`text-xl md:text-2xl ${user ? "text-green-500" : "text-black"} hover:text-gray-600`}
-            >
-              <FaUser />
-            </Link>
-            <Link href="/carrinho" className="text-xl md:text-2xl hover:text-gray-600 relative">
-              <FaShoppingCart />
-              {totalItems > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                  {totalItems}
-                </span>
-              )}
-            </Link>
-          </div>
-        </div>
+      {/* Carrinho */}
+      <Link
+        href="/carrinho"
+        className="w-8 h-8 flex items-center justify-center aspect-square relative text-xl text-white hover:text-emerald-300"
+      >
+        <FaShoppingCart />
+        {totalItems > 0 && (
+          <span className="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full">
+            {totalItems}
+          </span>
+        )}
+      </Link>
 
-        {/* Navbar */}
-        <nav className="w-full bg-gray-400 mt-4 p-2 rounded-md">
-          <ul className="flex flex-wrap justify-center space-x-6 md:space-x-20 text-sm md:text-lg font-medium">
+      {/* Menu */}
+      <div className="relative">
+        <button
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="w-8 h-8 flex items-center justify-center aspect-square text-xl text-white hover:text-emerald-300"
+        >
+          <FaBars />
+        </button>
+
+        {isMenuOpen && (
+          <ul className="absolute right-0 top-10 w-48 bg-emerald-800 text-white shadow-lg rounded-md border border-emerald-700 z-50">
             <li>
-              <Link href="/" className="hover:text-gray-600">Início</Link>
+              <Link href="/" className="block px-4 py-2 hover:bg-emerald-700">Início</Link>
             </li>
             <li>
-              <Link href="/catalogo" className="hover:text-gray-600">Catálogo</Link>
+              <Link href="/catalogo" className="block px-4 py-2 hover:bg-emerald-700">Catálogo</Link>
             </li>
             <li>
-              <Link href="/ofertas" className="hover:text-gray-600">Ofertas</Link>
+              <Link href="/ofertas" className="block px-4 py-2 hover:bg-emerald-700">Ofertas</Link>
             </li>
             <li>
-              <Link href="/contato" className="hover:text-gray-600">Contato</Link>
+              <Link href="/contato" className="block px-4 py-2 hover:bg-emerald-700">Contato</Link>
             </li>
           </ul>
-        </nav>
+        )}
       </div>
-    </header>
+    </div>
+  </div>
+</div>
   );
-}
+} 

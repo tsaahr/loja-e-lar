@@ -10,7 +10,7 @@ export default function CarrinhoPage() {
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="container mx-auto pt-14 p-6">
       <h1 className="text-2xl font-bold mb-6">Meu Carrinho</h1>
 
       {cart.length === 0 ? (
